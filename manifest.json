@@ -1,0 +1,34 @@
+{
+  "manifest_version": 3,
+  "name": "BCTT Watcher",
+  "version": "1.0",
+  "host_permissions": [
+    "https://finance.vietstock.vn/*",
+    "https://trade.vndirect.com.vn/*",
+    "https://mohopam.com/*"
+  ],
+  "permissions": [
+    "storage",
+    "<all_urls>",
+    "webRequest",
+    "webRequestBlocking",
+    "tabs",
+    "downloads"
+  ],
+
+  "background": {
+	"scripts": ["background.js"],
+	"type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://finance.vietstock.vn/*",
+        "https://trade.vndirect.com.vn/*",
+        "https://banggia.vndirect.com.vn/*"
+      ],
+      "js": ["chart.umd.min.js", "utils/utils.js", "utils/business.js", "utils/dom.js", "price.js", "stock.js", "content.js"],
+      "run_at": "document_start"
+    }
+  ]
+}
