@@ -9,7 +9,6 @@
   ],
   "permissions": [
     "storage",
-    "<all_urls>",
     "webRequest",
     "webRequestBlocking",
     "tabs",
@@ -27,7 +26,7 @@
         "https://trade.vndirect.com.vn/*",
         "https://banggia.vndirect.com.vn/*"
       ],
-      "js": ["chart.umd.min.js", "utils/utils.js", "utils/business.js", "utils/dom.js", "price.js", "stock.js", "content.js"],
+      "js": ["utils/chart.umd.min.js", "utils/utils.js", "utils/extract.js", "utils/business.js", "utils/dom.js", "price.js", "stock.js"],
       "run_at": "document_start"
     }
   ]

@@ -1,7 +1,3 @@
-export function add(a, b) {
-    return a + b;
-}
-
 export class Cache {
   constructor(ttl) {
     this.ttl = ttl;
@@ -53,13 +49,15 @@ export class StockAPI {
   }
 }
 
-function detect(request) {
-    const url = request.url;
-    if (url.includes(".m3u8") || url.includes(".mp4")) {
-      console.log(d.tabId);
-      browser.tabs.sendMessage(d.tabId, {
-        type: "VIDEO_FOUND",
-        url
-      });
-    }
-};
+export function listen(type = 'TRACK') {
+    browser.webRequest.onBeforeRequest.addListener((request) => {
+          if (request.tabId >= 0) {
+            browser.tabs.sendMessage(request.tabId, {
+              type: type,
+              request: request
+            });
+          }
+      },
+      { urls: ["<all_urls>"] }
+    );
+}

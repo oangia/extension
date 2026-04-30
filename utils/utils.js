@@ -12,6 +12,20 @@ class OverlayUI {
     // state (deferred render)
     this._actions = [];
     this._content = null;
+    this.tooltip = document.createElement("div");
+    Object.assign(this.tooltip.style, {
+      position: "fixed",
+      background: "#1f2635",
+      color: "#e6e6e6",
+      border: "1px solid #2a3548",
+      borderRadius: "6px",
+      padding: "8px",
+      fontSize: "12px",
+      pointerEvents: "none",
+      zIndex: 999999,
+      display: "none",
+      whiteSpace: "normal"
+    });
 
     document.addEventListener("keydown", e => {
       if (e.key === "Escape") this.toggle();
@@ -48,6 +62,21 @@ class OverlayUI {
     this.overlay.append(topBar, this.container);
     this.renderActions();
     document.body.appendChild(this.overlay);
+    const style = document.createElement("style");
+    style.textContent = `
+      tr:hover td {
+        background: rgba(255, 255, 255, 0.1);
+      }
+    `;
+    document.head.appendChild(style);
+    document.body.appendChild(this.tooltip);
+    document.addEventListener("mousemove", (e) => {
+            this.tooltip.style.left = e.clientX + 12 + "px";
+            this.tooltip.style.top = e.clientY + 12 + "px";
+        });
+        document.addEventListener("mouseleave", () => {
+            this.tooltip.style.display = "none";
+        });
   }
 
   // ---------- state setters ----------
@@ -94,6 +123,7 @@ class OverlayUI {
     this.isOpen ? this.close() : this.open();
   }
 }
+const ui = new OverlayUI();
 
 // ================= UTILS =================
 function getStockCode() {
@@ -101,9 +131,9 @@ function getStockCode() {
 }
 
 function toNumber(str) {
-  if (!str) return null;
+  if (!str) return 0;
   const num = Number(str.replace(/,/g, "").replace(/\s/g, ""));
-  return isNaN(num) ? str : num;
+  return isNaN(num) ? 0 : num;
 }
 
 function colorVal(x) {
@@ -199,3 +229,5 @@ function colorByRule(num, rule) {
   if (isNaN(num) || !rule) return "";
   return num >= rule.threshold ? rule.high : rule.low;
 }
+
+
